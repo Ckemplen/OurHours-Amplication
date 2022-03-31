@@ -1,0 +1,59 @@
+import * as React from "react";
+
+import {
+  Show,
+  SimpleShowLayout,
+  ShowProps,
+  ReferenceField,
+  TextField,
+  DateField,
+  ReferenceManyField,
+  Datagrid,
+} from "react-admin";
+
+import { EMPLOYEE_TITLE_FIELD } from "./EmployeeTitle";
+import { BUSINESS_TITLE_FIELD } from "../business/BusinessTitle";
+
+export const EmployeeShow = (props: ShowProps): React.ReactElement => {
+  return (
+    <Show {...props}>
+      <SimpleShowLayout>
+        <ReferenceField
+          label="Business"
+          source="business.id"
+          reference="Business"
+        >
+          <TextField source={BUSINESS_TITLE_FIELD} />
+        </ReferenceField>
+        <DateField source="createdAt" label="Created At" />
+        <TextField label="First Name" source="firstName" />
+        <TextField label="Hourly Rate" source="hourlyRate" />
+        <TextField label="ID" source="id" />
+        <TextField label="Last Name" source="lastName" />
+        <DateField source="updatedAt" label="Updated At" />
+        <ReferenceManyField
+          reference="Shift"
+          target="EmployeeId"
+          label="Shifts"
+        >
+          <Datagrid rowClick="show">
+            <TextField label="Actual Finish" source="actualFinish" />
+            <TextField label="Actual Start" source="actualStart" />
+            <DateField source="createdAt" label="Created At" />
+            <ReferenceField
+              label="Employee"
+              source="employee.id"
+              reference="Employee"
+            >
+              <TextField source={EMPLOYEE_TITLE_FIELD} />
+            </ReferenceField>
+            <TextField label="ID" source="id" />
+            <TextField label="Scheduled Finish" source="scheduledFinish" />
+            <TextField label="Scheduled Start" source="scheduledStart" />
+            <DateField source="updatedAt" label="Updated At" />
+          </Datagrid>
+        </ReferenceManyField>
+      </SimpleShowLayout>
+    </Show>
+  );
+};
