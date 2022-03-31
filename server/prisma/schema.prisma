@@ -1,0 +1,41 @@
+datasource postgres {
+  provider = "postgresql"
+  url      = env("POSTGRESQL_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  createdAt DateTime @default(now())
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  password  String
+  roles     String[]
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+model Shift {
+  actualFinish    DateTime?
+  actualStart     DateTime?
+  createdAt       DateTime  @default(now())
+  employee        Employee? @relation(fields: [employeeId], references: [id])
+  employeeId      String?
+  id              String    @id @default(cuid())
+  scheduledFinish DateTime
+  scheduledStart  DateTime
+  updatedAt       DateTime  @updatedAt
+}
+
+model Employee {
+  createdAt  DateTime @default(now())
+  firstName  String
+  hourlyRate Float
+  id         String   @id @default(cuid())
+  lastName   String
+  shifts     Shift[]
+  updatedAt  DateTime @updatedAt
+}
